@@ -45,10 +45,10 @@ const button = document.getElementById('btn');
 // Variable to keep track of the last shown message index
 let lastIndex = -1;
 
-// 2. Updated Message Logic (Avoid Repeats + Heart Confetti)
+// 2. Updated Message Logic (Avoid Repeats + HEART CONFETTI)
 button.addEventListener('click', () => {
-    // TRIGGER HEART CONFETTI
-    const scalar = 2.5; 
+    // --- HEART CONFETTI START ---
+    const scalar = 2.5; // Tamaño de los corazones
     const heart = confetti.shapeFromText({ text: '❤️', scalar });
 
     confetti({
@@ -59,6 +59,47 @@ button.addEventListener('click', () => {
         colors: ['#ff4081', '#ff80ab', '#f8bbd0'],
         scalar: scalar
     });
+    // --- HEART CONFETTI END ---
 
-    // MESSAGE TRANSITION LOGIC
-    messageElement.classList.remove('fade-
+    messageElement.classList.remove('fade-in');
+    void messageElement.offsetWidth; // Force CSS restart
+    
+    let randomIndex;
+    do {
+        randomIndex = Math.floor(Math.random() * messages.length);
+    } while (randomIndex === lastIndex && messages.length > 1);
+    
+    lastIndex = randomIndex;
+    messageElement.textContent = messages[randomIndex];
+    
+    messageElement.classList.add('fade-in');
+});
+
+// 3. Day Counter Logic
+function updateCounter() {
+    const startDate = new Date(2017, 9, 14); 
+    const today = new Date();
+    const timeDiff = today - startDate;
+    const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+    document.getElementById('days-count').textContent = daysDiff;
+}
+
+// 4. Dynamic Background Logic
+function setDynamicBackground() {
+    const hour = new Date().getHours();
+    const body = document.body;
+
+    if (hour >= 5 && hour < 12) {
+        body.style.background = "linear-gradient(135deg, #FF9A8B 0%, #FFD1FF 100%)";
+    } else if (hour >= 12 && hour < 18) {
+        body.style.background = "linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%)";
+    } else if (hour >= 18 && hour < 21) {
+        body.style.background = "linear-gradient(135deg, #667eea 0%, #764ba2 100%)";
+    } else {
+        body.style.background = "linear-gradient(135deg, #243B55 0%, #141E30 100%)";
+    }
+}
+
+// Initialize everything
+updateCounter();
+setDynamicBackground();
