@@ -37,18 +37,26 @@ const messages = [
     "From 13 & 14 years old to 22 & 23... look at how far we've come.",
     "High school crushes that turned into a marriage... we really are a movie.",
     "I loved you in the lives before this one, I love you in this one, and I'll find you in every one that follows."
-
 ];
 
 const messageElement = document.getElementById('message');
 const button = document.getElementById('btn');
 
-// 2. Random Message Logic
+// NEW: Variable to keep track of the last shown message index
+let lastIndex = -1;
+
+// 2. Updated Message Logic (Avoid Repeats)
 button.addEventListener('click', () => {
     messageElement.classList.remove('fade-in');
     void messageElement.offsetWidth; // Force CSS restart
     
-    const randomIndex = Math.floor(Math.random() * messages.length);
+    let randomIndex;
+    // Keep picking a number until it's different from the last one
+    do {
+        randomIndex = Math.floor(Math.random() * messages.length);
+    } while (randomIndex === lastIndex && messages.length > 1);
+    
+    lastIndex = randomIndex;
     messageElement.textContent = messages[randomIndex];
     
     messageElement.classList.add('fade-in');
@@ -56,15 +64,33 @@ button.addEventListener('click', () => {
 
 // 3. Day Counter Logic
 function updateCounter() {
-    // SET YOUR DATE HERE: (Year, Month Index 0-11, Day)
-    // Example: January is 0, February is 1...
     const startDate = new Date(2017, 9, 14); 
     const today = new Date();
-    
     const timeDiff = today - startDate;
     const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-    
     document.getElementById('days-count').textContent = daysDiff;
 }
 
+// 4. NEW: Dynamic Background Logic
+function setDynamicBackground() {
+    const hour = new Date().getHours();
+    const body = document.body;
+
+    if (hour >= 5 && hour < 12) {
+        // Morning: Sunrise colors
+        body.style.background = "linear-gradient(135deg, #FF9A8B 0%, #FFD1FF 100%)";
+    } else if (hour >= 12 && hour < 18) {
+        // Afternoon: Your classic pink vibe
+        body.style.background = "linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%)";
+    } else if (hour >= 18 && hour < 21) {
+        // Evening: Sunset purple
+        body.style.background = "linear-gradient(135deg, #667eea 0%, #764ba2 100%)";
+    } else {
+        // Night: Midnight blue
+        body.style.background = "linear-gradient(135deg, #243B55 0%, #141E30 100%)";
+    }
+}
+
+// Initialize everything
 updateCounter();
+setDynamicBackground();
