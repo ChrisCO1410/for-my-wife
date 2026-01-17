@@ -1,21 +1,28 @@
 body {
-    background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+    /* Removed static background to allow JavaScript dynamic colors to show */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
     font-family: -apple-system, system-ui, sans-serif;
+    
+    /* Makes the color shift between morning/day/night feel smooth */
+    transition: background 2s ease; 
+    background-attachment: fixed;
 }
 
 .container {
     padding: 30px;
-    background: white;
+    /* Slightly transparent white so the dynamic background colors "glow" through */
+    background: rgba(255, 255, 255, 0.9); 
     border-radius: 30px;
     box-shadow: 0 15px 35px rgba(0,0,0,0.1);
     width: 85%;
     max-width: 350px;
     text-align: center;
+    /* Adds a modern "frosted glass" effect popular on iOS */
+    backdrop-filter: blur(10px); 
 }
 
 .profile-photo {
@@ -27,11 +34,25 @@ body {
     margin-bottom: 15px;
 }
 
-h1 { color: #880e4f; font-size: 1.4rem; margin: 0; }
+h1 { 
+    color: #880e4f; 
+    font-size: 1.4rem; 
+    margin: 0; 
+}
 
-.message-box { min-height: 120px; display: flex; align-items: center; justify-content: center; margin: 20px 0; }
+.message-box { 
+    min-height: 120px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    margin: 20px 0; 
+}
 
-#message { font-size: 1.1rem; color: #444; line-height: 1.5; }
+#message { 
+    font-size: 1.1rem; 
+    color: #444; 
+    line-height: 1.5; 
+}
 
 button {
     background-color: #ff4081;
@@ -44,6 +65,12 @@ button {
     width: 100%;
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(255, 64, 129, 0.3);
+    /* Simple tap feedback */
+    transition: transform 0.1s ease;
+}
+
+button:active {
+    transform: scale(0.96);
 }
 
 .counter-section {
@@ -52,13 +79,32 @@ button {
     border-top: 1px solid #eee;
 }
 
-#days-count { font-size: 2rem; font-weight: bold; color: #ff4081; margin: 0; }
+#days-count { 
+    font-size: 2rem; 
+    font-weight: bold; 
+    color: #ff4081; 
+    margin: 0; 
+}
 
-.counter-section span { font-size: 0.7rem; color: #999; text-transform: uppercase; letter-spacing: 1px; }
+.counter-section span { 
+    font-size: 0.7rem; 
+    color: #999; 
+    text-transform: uppercase; 
+    letter-spacing: 1px; 
+}
 
-.fade-in { animation: fadeIn 0.8s ease forwards; }
+/* Smooth fade for the messages */
+.fade-in { 
+    animation: fadeIn 0.8s ease forwards; 
+}
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { 
+        opacity: 0; 
+        transform: translateY(10px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
 }
