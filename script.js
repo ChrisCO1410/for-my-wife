@@ -42,29 +42,16 @@ const messages = [
 const messageElement = document.getElementById('message');
 const button = document.getElementById('btn');
 
-// Variable to keep track of the last shown message index
+// NEW: Variable to keep track of the last shown message index
 let lastIndex = -1;
 
-// 2. Updated Message Logic (Avoid Repeats + HEART CONFETTI)
+// 2. Updated Message Logic (Avoid Repeats)
 button.addEventListener('click', () => {
-    // --- HEART CONFETTI START ---
-    const scalar = 2.5; // Tamaño de los corazones
-    const heart = confetti.shapeFromText({ text: '❤️', scalar });
-
-    confetti({
-        shapes: [heart],
-        particleCount: 40,
-        spread: 80,
-        origin: { y: 0.6 }, // Bursting from the button area
-        colors: ['#ff4081', '#ff80ab', '#f8bbd0'],
-        scalar: scalar
-    });
-    // --- HEART CONFETTI END ---
-
     messageElement.classList.remove('fade-in');
     void messageElement.offsetWidth; // Force CSS restart
     
     let randomIndex;
+    // Keep picking a number until it's different from the last one
     do {
         randomIndex = Math.floor(Math.random() * messages.length);
     } while (randomIndex === lastIndex && messages.length > 1);
@@ -84,18 +71,22 @@ function updateCounter() {
     document.getElementById('days-count').textContent = daysDiff;
 }
 
-// 4. Dynamic Background Logic
+// 4. NEW: Dynamic Background Logic
 function setDynamicBackground() {
     const hour = new Date().getHours();
     const body = document.body;
 
     if (hour >= 5 && hour < 12) {
+        // Morning: Sunrise colors
         body.style.background = "linear-gradient(135deg, #FF9A8B 0%, #FFD1FF 100%)";
     } else if (hour >= 12 && hour < 18) {
+        // Afternoon: Your classic pink vibe
         body.style.background = "linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%)";
     } else if (hour >= 18 && hour < 21) {
+        // Evening: Sunset purple
         body.style.background = "linear-gradient(135deg, #667eea 0%, #764ba2 100%)";
     } else {
+        // Night: Midnight blue
         body.style.background = "linear-gradient(135deg, #243B55 0%, #141E30 100%)";
     }
 }
