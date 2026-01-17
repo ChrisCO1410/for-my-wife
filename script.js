@@ -1,4 +1,3 @@
-// 1. Your Custom Messages
 const messages = [
     "I love that we can talk through hard things and grow together.",
     "You are my favorite person, even when we are miles apart.",
@@ -37,34 +36,64 @@ const messages = [
     "From 13 & 14 years old to 22 & 23... look at how far we've come.",
     "High school crushes that turned into a marriage... we really are a movie.",
     "I loved you in the lives before this one, I love you in this one, and I'll find you in every one that follows."
-
 ];
 
 const messageElement = document.getElementById('message');
 const button = document.getElementById('btn');
+let lastIndex = -1;
 
-// 2. Random Message Logic
 button.addEventListener('click', () => {
+    // 1. SAFE CONFETTI: Only runs if the library loaded correctly
+    try {
+        if (typeof confetti === 'function') {
+            const scalar = 2.5;
+            const heart = confetti.shapeFromText({ text: '❤️', scalar });
+            confetti({
+                shapes: [heart],
+                particleCount: 40,
+                spread: 80,
+                origin: { y: 0.6 },
+                colors: ['#ff4081', '#ff80ab', '#f8bbd0'],
+                scalar: scalar
+            });
+        }
+    } catch (e) { console.log("Confetti skip"); }
+
+    // 2. MESSAGE LOGIC
     messageElement.classList.remove('fade-in');
-    void messageElement.offsetWidth; // Force CSS restart
+    void messageElement.offsetWidth; 
     
-    const randomIndex = Math.floor(Math.random() * messages.length);
+    let randomIndex;
+    do {
+        randomIndex = Math.floor(Math.random() * messages.length);
+    } while (randomIndex === lastIndex && messages.length > 1);
+    
+    lastIndex = randomIndex;
     messageElement.textContent = messages[randomIndex];
-    
     messageElement.classList.add('fade-in');
 });
 
-// 3. Day Counter Logic
 function updateCounter() {
-    // SET YOUR DATE HERE: (Year, Month Index 0-11, Day)
-    // Example: January is 0, February is 1...
     const startDate = new Date(2017, 9, 14); 
     const today = new Date();
-    
     const timeDiff = today - startDate;
     const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-    
     document.getElementById('days-count').textContent = daysDiff;
 }
 
+function setDynamicBackground() {
+    const hour = new Date().getHours();
+    const body = document.body;
+    if (hour >= 5 && hour < 12) {
+        body.style.background = "linear-gradient(135deg, #FF9A8B 0%, #FFD1FF 100%)";
+    } else if (hour >= 12 && hour < 18) {
+        body.style.background = "linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%)";
+    } else if (hour >= 18 && hour < 21) {
+        body.style.background = "linear-gradient(135deg, #667eea 0%, #764ba2 100%)";
+    } else {
+        body.style.background = "linear-gradient(135deg, #243B55 0%, #141E30 100%)";
+    }
+}
+
 updateCounter();
+setDynamicBackground();
